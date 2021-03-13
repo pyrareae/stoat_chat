@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    iodine (0.7.44)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  iodine (~> 0.7)
+
+BUNDLED WITH
+   2.2.12
