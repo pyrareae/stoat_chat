@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.stoat_chat">
    <application
+        android:usesCleartextTraffic="true"
         android:label="stoat_chat"
         android:icon="@mipmap/ic_launcher">
         <activity

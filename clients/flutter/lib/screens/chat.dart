@@ -20,6 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
     messages.onReceive = () {
       setState(() {});
     };
+    messages.messagingContext = context;
     messages.reloadHistory();
     super.initState();
   }

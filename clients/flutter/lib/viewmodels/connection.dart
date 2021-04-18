@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:stoat_chat/models/message.dart';
 import 'dart:collection';
 import 'package:web_socket_channel/io.dart';
@@ -12,19 +14,23 @@ import 'package:stoat_chat/util/auth.dart';
 
 class ConnectionViewModel extends ChangeNotifier {
   List<Message> _messages = [];
-  String lastUrl;
-  IOWebSocketChannel channel;
+  IOWebSocketChannel _channel;
   UnmodifiableListView<Message> get messages => UnmodifiableListView(_messages);
   Map<String, Function> _handlers;
   Auth _auth;
   Function onReceive = () {};
   List<User> _users;
   UnmodifiableListView<User> get users => UnmodifiableListView(_users);
+  String url = 'localhost:8887';
+  BuildContext messagingContext;
+  String userNick = 'user';
 
-  ConnectionViewModel({String url = "10.0.0.34:8887"}) : super() {
+  ConnectionViewModel({this.messagingContext, this.onReceive}) : super() {
     _initAsync();
     _setupNetworking(url);
     _defineHandlers();
+    Future.delayed(Duration(seconds: 3))
+        .then((_) => _showSnackbar("welcome to STOATchat"));
   }
 
   void _initAsync() async {
@@ -50,14 +56,14 @@ class ConnectionViewModel extends ChangeNotifier {
           return Message(nick: el['nick'], text: el['text']);
         }).toList();
         notifyListeners();
-      }
+      },
+      'users_list': (resp) {}
     };
   }
 
   void _setupNetworking(String url) {
-    lastUrl = url;
-    channel = IOWebSocketChannel.connect("ws://${url}");
-    channel.stream.listen((message) {
+    _channel = IOWebSocketChannel.connect("ws://${url}");
+    _channel.stream.listen((message) {
       print("received message: $message");
       var parsed = jsonDecode(message);
       if (_handlers.containsKey(parsed['type'])) {
@@ -69,20 +75,20 @@ class ConnectionViewModel extends ChangeNotifier {
   }
 
   void _checkConnection() {
-    if (channel.closeCode != null) {
-      _setupNetworking(lastUrl);
+    if (_channel.closeCode != null) {
+      _setupNetworking(url);
     }
   }
 
   // Send a new message to the server
   void send(Message message) async {
     _checkConnection();
-    channel.sink.add(
+    _channel.sink.add(
       jsonEncode({
         'type': 'message',
         'data': {
           'text': message.text,
-          'nick': message.nick,
+          'nick': userNick,
           'pubkey': _auth.encoded,
           'signature': await message.sign()
         }
@@ -91,7 +97,7 @@ class ConnectionViewModel extends ChangeNotifier {
   }
 
   void reloadHistory() {
-    channel.sink.add('{"type": "history_request"}');
+    _channel.sink.add('{"type": "history_request"}');
   }
 
   void add(Message message) {
@@ -99,6 +105,37 @@ class ConnectionViewModel extends ChangeNotifier {
   }
 
   void fetchUsers() {
-    channel.sink.add('{"type": "users_request"}');
+    _channel.sink.add('{"type": "users_request"}');
+  }
+
+  void reconnect() {
+    try {
+      _setupNetworking(url);
+      _showSnackbar('Connected!');
+    } catch (e) {
+      print(e);
+      _showSnackbar('Error!', status: #warn);
+    }
+  }
+
+  void _showSnackbar(String message, {Symbol status = #info}) {
+    if (messagingContext == null) return;
+    Color color;
+    switch (status) {
+      case #info:
+        color = Colors.transparent;
+        break;
+      case #warn:
+        break;
+      case #ok:
+        break;
+    }
+
+    ScaffoldMessenger.of(messagingContext).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Container(child: Text(message)),
+      ),
+    );
   }
 }
