@@ -65,6 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: TextField(
