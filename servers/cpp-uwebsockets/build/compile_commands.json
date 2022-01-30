@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/pyra/code/stoat_chat/build",
-  "command": "/usr/bin/c++ -g -o CMakeFiles/cpp_uws.dir/main.cpp.o -c /home/pyra/code/stoat_chat/main.cpp",
-  "file": "/home/pyra/code/stoat_chat/main.cpp"
-}
-]
