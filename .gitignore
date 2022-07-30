@@ -1,3 +1,4 @@
-store.yam
+store.yaml
 clients/build*/*
 build/
+*.sqlite
