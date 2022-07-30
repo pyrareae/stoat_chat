@@ -6,16 +6,16 @@ import 'dart:convert';
 import 'package:asn1lib/asn1lib.dart';
 
 class Auth {
-  RSAPrivateKey privateKey;
-  RSAPublicKey publicKey;
-  String _pem;
-  static Auth _instance;
+  late RSAPrivateKey privateKey;
+  late RSAPublicKey publicKey;
+  String? _pem;
+  static Auth? _instance;
   Auth();
 
-  static Future<Auth> instance() async {
+  static Future<Auth?> instance() async {
     if (_instance != null) return _instance;
     _instance = Auth();
-    await _instance.initKeys();
+    await _instance!.initKeys();
     return _instance;
   }
 
@@ -108,13 +108,13 @@ class Auth {
     publicKey = pair.publicKey;
   }
 
-  String get encoded {
+  String? get encoded {
     if (_pem != null) return _pem;
 
     var topLevel = new ASN1Sequence();
 
-    topLevel.add(ASN1Integer(publicKey.modulus));
-    topLevel.add(ASN1Integer(publicKey.exponent));
+    topLevel.add(ASN1Integer(publicKey.modulus!));
+    topLevel.add(ASN1Integer(publicKey.exponent!));
     _pem = base64.encode(topLevel.encodedBytes);
     return _pem;
   }

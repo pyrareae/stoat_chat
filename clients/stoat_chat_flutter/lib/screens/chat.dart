@@ -50,7 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Consumer<ConnectionViewModel>(
               builder: (context, messages, _) => ListView.builder(
                 reverse: true,
-                itemCount: messages?.messages?.length ?? 0,
+                itemCount: messages.messages.length,
                 itemBuilder: (context, index) => Row(
                   children: [
                     Container(

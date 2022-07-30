@@ -14,15 +14,15 @@ import 'package:stoat_chat/util/auth.dart';
 
 class ConnectionViewModel extends ChangeNotifier {
   List<Message> _messages = [];
-  IOWebSocketChannel _channel;
+  late IOWebSocketChannel _channel;
   UnmodifiableListView<Message> get messages => UnmodifiableListView(_messages);
-  Map<String, Function> _handlers;
-  Auth _auth;
-  Function onReceive = () {};
-  List<User> _users;
+  late Map<String, Function> _handlers;
+  Auth? _auth;
+  Function? onReceive = () {};
+  late List<User> _users;
   UnmodifiableListView<User> get users => UnmodifiableListView(_users);
   String url = 'localhost:8887';
-  BuildContext messagingContext;
+  BuildContext? messagingContext;
   String userNick = 'user';
 
   ConnectionViewModel({this.messagingContext, this.onReceive}) : super() {
@@ -43,7 +43,7 @@ class ConnectionViewModel extends ChangeNotifier {
         var d = resp['data'];
         final newMessage = Message(nick: d['nick'], text: d['text']);
         add(newMessage);
-        onReceive();
+        onReceive!();
         notifyListeners();
       },
       'response': (resp) {
@@ -67,7 +67,7 @@ class ConnectionViewModel extends ChangeNotifier {
       print("received message: $message");
       var parsed = jsonDecode(message);
       if (_handlers.containsKey(parsed['type'])) {
-        _handlers[parsed['type']](parsed);
+        _handlers[parsed['type']]!(parsed);
       } else {
         print("ERROR: got message with unhandled type! ${parsed}");
       }
@@ -89,7 +89,7 @@ class ConnectionViewModel extends ChangeNotifier {
         'data': {
           'text': message.text,
           'nick': userNick,
-          'pubkey': _auth.encoded,
+          'pubkey': _auth!.encoded,
           'signature': await message.sign()
         }
       }),
@@ -131,7 +131,7 @@ class ConnectionViewModel extends ChangeNotifier {
         break;
     }
 
-    ScaffoldMessenger.of(messagingContext).showSnackBar(
+    ScaffoldMessenger.of(messagingContext!).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Container(child: Text(message)),

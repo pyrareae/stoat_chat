@@ -5,7 +5,7 @@ import 'package:stoat_chat/util/auth.dart';
 import 'dart:collection';
 
 class UsersViewModel extends ChangeNotifier {
-  List<User> _users;
+  late List<User> _users;
   UnmodifiableListView<User> get users => UnmodifiableListView(_users);
 
   UsersViewModel() : super();
