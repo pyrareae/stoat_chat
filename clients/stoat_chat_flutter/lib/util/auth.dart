@@ -12,11 +12,11 @@ class Auth {
   static Auth? _instance;
   Auth();
 
-  static Future<Auth?> instance() async {
-    if (_instance != null) return _instance;
+  static Future<Auth> instance() async {
+    if (_instance != null) return _instance!;
     _instance = Auth();
     await _instance!.initKeys();
-    return _instance;
+    return _instance!;
   }
 
   // from https://github.com/bcgit/pc-dart/blob/master/tutorials/rsa.md

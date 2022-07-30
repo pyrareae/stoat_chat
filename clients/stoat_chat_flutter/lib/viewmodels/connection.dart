@@ -29,8 +29,8 @@ class ConnectionViewModel extends ChangeNotifier {
     _initAsync();
     _setupNetworking(url);
     _defineHandlers();
-    Future.delayed(Duration(seconds: 3))
-        .then((_) => _showSnackbar("welcome to STOATchat"));
+    // Future.delayed(Duration(seconds: 3))
+    //     .then((_) => _showSnackbar("welcome to STOATchat"));
   }
 
   void _initAsync() async {
