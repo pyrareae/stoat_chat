@@ -139,13 +139,13 @@ module ChatServer
       client.publish :chat, {type: 'message', data: msg.serialize}.to_json
     end,
     'history_request' => lambda do |client, data|
-      client.publish(:chat, {
+      client.write(:chat, {
         type: 'history',
         data: Messages.all.values.sort_by{Time.parse _1.time}.map(&:serialize)
       }.to_json)
     end,
     'users_request' => lambda do |client, data|
-      client.publish(:chat, 'tough luck')
+      client.write(:chat, 'tough luck')
     end
   }
 
