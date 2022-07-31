@@ -32,8 +32,6 @@ class User
     @key.sign 'SHA256', text
   end
 
-  private
-
   def set_key
     cfg_name = ".eternal_key_of_stoat"
     unless File.exist? File.join __dir__, cfg_name
