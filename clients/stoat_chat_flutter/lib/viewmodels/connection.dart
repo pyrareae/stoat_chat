@@ -52,9 +52,13 @@ class ConnectionViewModel extends ChangeNotifier {
       },
       'history': (resp) {
         var d = resp['data'];
-        _messages = (d as List).map((el) {
-          return Message(nick: el['nick'], text: el['text']);
-        }).toList();
+        _messages = (d as List)
+            .map((el) {
+              return Message(nick: el['nick'], text: el['text']);
+            })
+            .toList()
+            .reversed
+            .toList();
         notifyListeners();
       },
       'users_list': (resp) {}
