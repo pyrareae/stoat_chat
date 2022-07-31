@@ -2,3 +2,4 @@ store.yaml
 clients/build*/*
 build/
 *.sqlite
+.eternal_key_of_stoat
