@@ -1,0 +1,3 @@
+[Project]
+Manager=KDevCMakeManager
+Name=stoat_chat_qml_kirigami
