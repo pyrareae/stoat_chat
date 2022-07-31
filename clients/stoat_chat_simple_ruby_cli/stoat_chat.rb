@@ -106,6 +106,7 @@ def start_client
     Async::WebSocket::Client.connect(endpoint) do |connection|
       input_task = task.async do
         while line = stdin.read_until("\n")
+          print "\033[1A\033[K" # magick to clear the line
           connection.write(User::Message.new(user, line).format)
           connection.flush
         end
