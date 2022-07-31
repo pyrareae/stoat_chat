@@ -114,7 +114,7 @@ module ChatServer
   def on_open client
     client.subscribe :chat
     puts "Client connected: #{client.inspect}"
-    client.publish :chat, {type: 'response', message: 'Yay, you are connected!', status: :ok}.to_json
+    client.publish :chat, {type: 'response', message: 'Yay, you are connected!', status: :ok}
   end
 
   def on_close client
@@ -139,20 +139,20 @@ module ChatServer
       client.publish :chat, {type: 'message', data: msg.serialize}.to_json
     end,
     'history_request' => lambda do |client, data|
-      client.write{
+      client.publish(:chat, {
         type: 'history',
-        data: Messages.all.values.sort_by{Time.parse _1.time}.map(&:serialize) # SLOW!
-      }.to_json
+        data: Messages.all.values.sort_by{Time.parse _1.time}.map(&:serialize)
+      }.to_json)
     end,
     'users_request' => lambda do |client, data|
-      client.write {}
+      client.publish(:chat, 'tough luck')
     end
   }
 
   HANDLERS.default = lambda do |client, data|
     warn "Received message that I can't handle!"
     pp data
-    client.publish :chat, {type: 'response', message: "I can't interact with that!", status: :error}.to_json
+    client.publish :chat, {type: 'response', message: "I don't know how to interact with that...", status: :error}.to_json
   end
 end
 
