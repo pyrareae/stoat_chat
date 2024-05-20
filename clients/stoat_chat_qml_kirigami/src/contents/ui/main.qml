@@ -15,8 +15,6 @@ Kirigami.ApplicationWindow {
     pageStack.initialPage: page
 
     function send() {
-        chatListModel.append({nick: "Faku", message: mainInput.text})
-        mainInput.text = ''
     }
 
     Kirigami.Page {
@@ -35,16 +33,16 @@ Kirigami.ApplicationWindow {
                 Layout.fillHeight: true
                 id: chatList
                 width: page.width
-                model: ListModel {
-                    id: chatListModel
-                }
+                model: App.messages
+
                 delegate: Item {
+                    required property string
                     height: childrenRect.height
                     Rectangle {
                         height: childrenRect.height
                         Text{
                             color: Kirigami.Theme.textColor
-                            text: `${nick} -- ${message}`
+                            text: message
                         }
                     }
 
