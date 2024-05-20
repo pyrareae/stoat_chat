@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="stoat_chat_gjs">
+	<schema id="com.pyrareae.stoatchatgjs" path="/com/pyrareae/stoatchatgjs/">
+	</schema>
+</schemalist>

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=stoat_chat_gjs
+Exec=com.pyrareae.stoatchatgjs
+Icon=com.pyrareae.stoatchatgjs
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

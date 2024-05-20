@@ -1,0 +1,6 @@
+data/com.pyrareae.stoatchatgjs.desktop.in
+data/com.pyrareae.stoatchatgjs.metainfo.xml.in
+data/com.pyrareae.stoatchatgjs.gschema.xml
+src/main.js
+src/window.js
+src/window.ui
